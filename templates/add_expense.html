@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Add Expense{% endblock %}
+{% block content %}
+<div class="add-container">
+  <div class="add-card">
+    <h2>Add New Expense</h2>
+
+    <form method="POST">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount (₹)</label>
+        <input type="number" id="amount" step="0.01" name="amount" placeholder="Enter amount" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" placeholder="Food, Travel, etc." required>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <button type="submit">Add Expense</button>
+      <a href="{{ url_for('dashboard') }}" class="btn-cancel">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<style>
+/* Container background */
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* Light blue gradient */
+    padding: 20px;
+}
+
+/* Card styling */
+.add-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px 25px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+/* Heading */
+.add-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #0d6efd; /* blue accent color */
+    font-weight: 700;
+}
+
+/* Form groups */
+.form-group {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1.5px solid #0d6efd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0b5ed7;
+    box-shadow: 0 0 6px rgba(13,110,253,0.5);
+}
+
+/* Buttons */
+button {
+    width: 50%;
+    padding: 0.7rem;
+    background: #0d6efd;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px auto 0 auto;
+    display: block;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #0b5ed7;
+}
+
+/* Cancel button */
+.btn-cancel {
+    display: block;
+    margin: 12px auto 0 auto;
+    text-align: center;
+    text-decoration: none;
+    color: #0d6efd;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+}
+
+.btn-cancel:hover {
+    color: #0b5ed7;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,386 @@
+/* Dashboard Container */
+.dashboard-container {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 0.5rem;
+}
+
+.month-picker input, .month-picker button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #0d6efd;
+    background: #0d6efd;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.month-picker input:hover, .month-picker button:hover {
+    background: #0b5ed7;
+    border-color: #0b5ed7;
+}
+
+/* Cards */
+.goal-card, .insights-card, .table-card, .summary-card, .chart-card {
+    background: white;
+    border-left: 5px solid #f9e7daff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+}
+
+.goal-card form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.goal-card input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #0d6efd;
+    border-radius: 8px;
+}
+
+.goal-card button {
+    background: #0d6efd;
+    border: none;
+    padding: 8px 15px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.goal-card button:hover { background: #0b5ed7; }
+
+/* Progress Bar */
+.progress-container {
+    margin-top: 15px;
+}
+
+.progress-bar-bg {
+    background: #e0e0e0;
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* Insights List */
+.insights-card ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.insights-card li {
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: 500;
+}
+.insight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.insight-item {
+    background: #f8fafc;
+    border-left: 5px solid #0d6efd;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.insight-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.insight-icon {
+    font-size: 1.2rem;
+}
+
+
+/* Dashboard Actions */
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-lifetime {
+    background: #f44336;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-lifetime:hover { background: #d32f2f; }
+
+.btn-add {
+    text-decoration: none;
+    padding: 8px 16px;
+    background: #22c55e;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-add:hover { background: #16a34a; }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+/* Expense Action Buttons */
+.expense-actions {
+    display: flex;
+    gap: 8px;           /* spacing between buttons */
+}
+
+/* Common button style */
+.expense-actions .btn {
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+/* Edit Button */
+.expense-actions .btn-edit {
+    background-color: #3b82f6;   /* nice blue */
+}
+
+.expense-actions .btn-edit:hover {
+    background-color: #2563eb;
+}
+
+/* Delete Button */
+.expense-actions .btn-delete {
+    background-color: #ef4444;   /* red */
+}
+
+.expense-actions .btn-delete:hover {
+    background-color: #b91c1c;
+}
+
+
+/* Chart Card */
+.chart-card canvas {
+
+    max-width: 100%;
+    height: auto;
+}
+
+/* Total Spent Card */
+.total-spent-card {
+    background: white;           /* soft warm background */
+    border-left: 5px solid #f9e7daff; /* accent color on left */
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #333;
+    max-width: 300px;
+    margin: 20px 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Hover effect for subtle interactivity */
+.total-spent-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+/* Dashboard Flex Row */
+.dashboard-flex-row {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.table-card {
+    flex: 2 1 0;
+    min-width: 0;
+}
+
+.dashboard-side-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1 1 0;
+    min-width: 260px;
+}
+
+.summary-card,
+.total-spent-card {
+    width: 100%;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .dashboard-flex-row {
+        flex-direction: column;
+    }
+    .dashboard-side-cards {
+        flex-direction: column;
+        min-width: 0;
+    }
+}
+/* ----------------------
+   Export / Import Buttons
+   ---------------------- */
+.export-buttons {
+    display: flex;
+    gap: 10px; /* space between export buttons */
+    margin-top: 10px;
+}
+
+.btn-export {
+    background-color: #3b82f6; /* same as your primary button */
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-export:hover {
+    background-color: #2563eb; /* slightly darker on hover */
+}
+
+/* Import CSV Button (styled like normal button) */
+.import-form {
+    display: flex;
+    align-items: center;
+    gap: 0px; /* space between file input and button */
+}
+.file-input {
+    flex: 1;       /* optional: lets file input stretch */
+    padding: 5px;  /* optional: smaller padding for tighter look */
+}
+
+.btn-import {
+    background-color: #10b981; /* green similar to add button if you want */
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-import:hover {
+    background-color: #059669; /* darker green on hover */
+}
+/* Delete Selected Button Styling */
+#deleteSelectedBtn {
+    background-color: #e74c3c; /* soft red for delete */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: none; /* hidden by default */
+    margin-top: 10px;
+}
+
+/* Hover effect */
+#deleteSelectedBtn:hover {
+    background-color: #c0392b;
+    transform: scale(1.02);
+}
+
+/* When visible (you can toggle this via JS) */
+#deleteSelectedBtn.show {
+    display: inline-block;
+}
+
+/* Optional — align with table */
+.bulk-delete-container {
+    margin-top: 12px;
+    text-align: right; /* right-align under the table */
+}
+/* Download Template Button */
+.btn-download {
+    padding: 0.6rem 1.2rem;
+    background-color: #3b82f6; /* blue accent */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+.btn-download:hover {
+    background-color: #2563eb; /* darker blue on hover */
+}
+
+
+

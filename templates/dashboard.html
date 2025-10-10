@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1>
+            {% if selected_month == "lifetime" %}
+                Lifetime Expenses
+            {% else %}
+                Expenses for {{ selected_month }}
+            {% endif %}
+        </h1>
+
+        <!-- Month Picker / Back -->
+        <div class="month-picker">
+            {% if selected_month != "lifetime" %}
+            <form method="POST" action="{{ url_for('dashboard') }}">
+                <input type="month" name="month" value="{{ selected_month }}" onchange="this.form.submit()">
+            </form>
+            {% else %}
+            <form method="POST" action="{{ url_for('dashboard') }}">
+                <input type="hidden" name="month" value="{{ datetime.now().strftime('%Y-%m') }}">
+                <button type="submit" class="btn">Back to Month View</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Goal Section -->
+    {% if selected_month != "lifetime" %}
+    <div class="goal-card">
+        <form method="POST" action="{{ url_for('set_goal') }}">
+            <input type="hidden" name="month" value="{{ selected_month }}">
+            <input type="number" step="0.01" name="goal_amount" placeholder="Set monthly goal (₹)" 
+                   value="{{ goal_amount if goal_amount is not none else '' }}">
+            <button type="submit" class="btn">Save Goal</button>
+        </form>
+
+        {% if goal_amount is not none %}
+        <div class="progress-container">
+            <p><strong>Goal:</strong> ₹{{ goal_amount }} | <strong>Spent:</strong> ₹{{ total_spent|round(2) }}</p>
+            {% set pct = (total_spent / goal_amount * 100) if goal_amount and goal_amount>0 else 0 %}
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" 
+                     style="width: {{ pct if pct<=100 else 100 }}%; 
+                            background-color: {% if total_spent <= goal_amount %}#4CAF50{% else %}#E53935{% endif %};">
+                </div>
+            </div>
+            <p>Progress: {{ pct|round(2) }}%</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Insights -->
+    {% if insights %}
+    <div class="insights-card">
+        <h2>Insights</h2>
+        <div class="insight-list">
+            {% for msg in insights %}
+                <div class="insight-item">
+                    <span class="insight-icon">💡</span> {{ msg }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Actions: Lifetime / Add / Import -->
+    <div class="dashboard-actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <form method="POST" action="{{ url_for('dashboard') }}" style="margin: 0;">
+            <input type="hidden" name="month" value="lifetime">
+            <button type="submit" class="btn btn-lifetime">Lifetime</button>
+        </form>
+
+        <a href="{{ url_for('add_expense') }}" class="btn btn-add">Add New Expense</a>
+
+        <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="import-form">
+              <input type="file" name="excel_file" accept=".xlsx" required>
+              <button type="submit" class="btn btn-import">Import Excel</button>
+         </form>
+         <form action="{{ url_for('download_template') }}" method="GET" style="display:inline-block; margin-left: 10px;" >
+              <button type="submit" class="btn-download">Download Template</button>
+         </form>
+
+    </div>
+
+    {% if expenses %}
+    <div class="dashboard-flex-row">
+        <!-- Expenses Table -->
+        <div class="table-card">
+            <h2>Expenses Table</h2>
+
+            <form id="bulkDeleteForm" method="POST" action="{{ url_for('delete_multiple_expenses') }}">
+                <button type="submit" id="deleteSelectedBtn" class="btn btn-delete" style="display: none; margin-bottom: 10px;">
+                    Delete Selected
+                </button>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Title</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_expenses" value="{{ expense[0] }}" class="expense-checkbox"></td>
+                            <td>{{ expense[1] }}</td>
+                            <td>₹{{ expense[2] }}</td>
+                            <td>{{ expense[3] }}</td>
+                            <td>{{ expense[4] }}</td>
+                            <td>
+                                <div class="expense-actions">
+                                    <a href="{{ url_for('edit_expense', expense_id=expense[0]) }}" class="btn btn-edit">Edit</a>
+                                    <a href="{{ url_for('delete_expense', expense_id=expense[0]) }}" onclick="return confirm('Are you sure?')" class="btn btn-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <!-- Summary -->
+        <div class="dashboard-side-cards">
+            <div class="summary-card">
+                <h2>Category-wise Summary</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category, total in category_totals.items() %}
+                        <tr>
+                            <td>{{ category }}</td>
+                            <td>₹{{ total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-spent-card">
+                <p><strong>Total Spent:</strong> ₹{{ total_spent }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export buttons below table -->
+    <div class="dashboard-actions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; justify-content: flex-start;">
+        <a href="{{ url_for('export_csv') }}" class="btn btn-export">Export CSV</a>
+        <a href="{{ url_for('export_excel') }}" class="btn btn-export">Export Excel</a>
+        <a href="{{ url_for('export_pdf') }}" class="btn btn-export">Export PDF</a>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-card">
+        <h2>Expenses by Category</h2>
+        <canvas id="categoryChart" width="400" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ category_totals.keys()|list|tojson }},
+                datasets: [{
+                    label: 'Amount',
+                    data: {{ category_totals.values()|list|tojson }},
+                    backgroundColor: ['#22c55e','#3b82f6','#f97316','#f43f5e','#a855f7','#14b8a6'],
+                    borderColor: '#00000033',
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+
+        // Checkbox logic
+        const checkboxes = document.querySelectorAll('.expense-checkbox');
+        const selectAll = document.getElementById('selectAll');
+        const deleteBtn = document.getElementById('deleteSelectedBtn');
+
+        function toggleDeleteButton() {
+            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+            deleteBtn.style.display = anyChecked ? 'inline-block' : 'none';
+        }
+
+        checkboxes.forEach(cb => cb.addEventListener('change', toggleDeleteButton));
+        selectAll.addEventListener('change', () => {
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+            toggleDeleteButton();
+        });
+    </script>
+
+    {% else %}
+    <p>No expenses added yet. Click "Add New Expense" to get started!</p>
+    {% endif %}
+</div>
+
+{% endblock %}

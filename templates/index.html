@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<style>
+/* Full-page background */
+.home-bg {
+    background: url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80")
+      no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Hero Card */
+.hero-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.2);
+    max-width: 650px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+}
+
+/* Headline */
+.hero-card h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: #1e293b;
+}
+
+/* Subtext */
+.hero-card p {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 2rem;
+}
+
+/* Buttons */
+.hero-card .btn-primary {
+    background: #3b82f6;
+    border: none;
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.hero-card .btn-primary:hover {
+    background: #2563eb;
+}
+
+</style>
+
+<div class="home-bg">
+  <div class="hero-card">
+    <h1>Welcome to <span style="color:#3b82f6;">FinTrack</span></h1>
+    <p class="lead">Smart Expense & Savings Manager — track your spending, set monthly goals, and get powerful insights for your future.</p>
+
+    <div class="d-flex justify-content-center gap-3">
+      {% if session.get('user_id') %}
+        <a class="btn btn-primary btn-lg" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+      {% else %}
+        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}">Get Started</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
