@@ -269,7 +269,70 @@ def export_pdf():
     output.seek(0)
 
     return send_file(output, as_attachment=True, download_name="expenses.pdf")
+# Import Excel
+@app.route('/import_excel', methods=['POST'])
+@login_required
+def import_excel():
+    file = request.files.get('file')
+    if not file:
+        flash('No file selected!', 'danger')
+        return redirect(url_for('dashboard'))
 
+    try:
+        from openpyxl import load_workbook
+        wb = load_workbook(file)
+        ws = wb.active
+
+        # Skip the header row
+        for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+            date, category, amount, title = row
+
+            # Validate and clean data
+            if not category or not amount:
+                continue  # skip incomplete rows
+
+            new_expense = Expense(
+                user_id=session['user_id'],
+                title=title or '',
+                category=category,
+                amount=float(amount or 0),
+                date=str(date) if date else datetime.now().strftime('%Y-%m-%d')
+            )
+            db.session.add(new_expense)
+
+        db.session.commit()
+        flash('Excel data imported successfully!', 'success')
+
+    except Exception as e:
+        flash(f'Error importing file: {e}', 'danger')
+
+    return redirect(url_for('dashboard'))
+
+
+# Download Excel Template
+@app.route('/download_template')
+@login_required
+def download_template():
+    from openpyxl import Workbook
+    from io import BytesIO
+    from flask import send_file
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Expense Template"
+    ws.append(["Date (YYYY-MM-DD)", "Category", "Amount", "Title"])  # Header row
+    ws.append(["2025-10-27", "Food", "150.00", "Lunch Example"])     # Example row
+
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    return send_file(
+        output,
+        download_name="expense_template.xlsx",
+        as_attachment=True,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
