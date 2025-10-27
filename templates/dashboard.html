@@ -82,7 +82,7 @@
         <a href="{{ url_for('add_expense') }}" class="btn btn-add">Add New Expense</a>
 
        <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="import-form">
-          <input type="file" name="file" accept=".xlsx" required>
+          <input type="file" name="excel_file" accept=".xlsx" required>
           <button type="submit" class="btn btn-import">Import Excel</button>
        </form>
 
@@ -117,7 +117,7 @@
                     <tbody>
                         {% for expense in expenses %}
                         <tr>
-                            <td><input type="checkbox" name="selected_expenses" value="{{ expense.id }}" class="expense-checkbox"></td>
+                            <td><input type="checkbox" name="expense_ids" value="{{ expense.id }}" class="expense-checkbox"></td>
                             <td>{{ expense.title }}</td>
                             <td>₹{{ expense.amount }}</td>
                             <td>{{ expense.category }}</td>
