@@ -345,7 +345,7 @@ def download_template():
     ws = wb.active
     ws.title = "Expense Template"
     ws.append(["Title", "Category", "Amount", "Date (YYYY-MM-DD)"])
-    ws.append(["Lunch", "Food", "150.00", "2025-10-27"])
+    ws.append(["Lunch", "Food", "200.00", "2025-10-27"])
 
     output = io.BytesIO()
     wb.save(output)
