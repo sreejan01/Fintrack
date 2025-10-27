@@ -81,10 +81,11 @@
 
         <a href="{{ url_for('add_expense') }}" class="btn btn-add">Add New Expense</a>
 
-        <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="import-form">
-              <input type="file" name="excel_file" accept=".xlsx" required>
-              <button type="submit" class="btn btn-import">Import Excel</button>
-         </form>
+       <form action="{{ url_for('import_excel') }}" method="POST" enctype="multipart/form-data" class="import-form">
+          <input type="file" name="file" accept=".xlsx" required>
+          <button type="submit" class="btn btn-import">Import Excel</button>
+       </form>
+
          <form action="{{ url_for('download_template') }}" method="GET" style="display:inline-block; margin-left: 10px;" >
               <button type="submit" class="btn-download">Download Template</button>
          </form>
