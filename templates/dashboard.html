@@ -116,15 +116,15 @@
                     <tbody>
                         {% for expense in expenses %}
                         <tr>
-                            <td><input type="checkbox" name="selected_expenses" value="{{ expense[0] }}" class="expense-checkbox"></td>
-                            <td>{{ expense[1] }}</td>
-                            <td>₹{{ expense[2] }}</td>
-                            <td>{{ expense[3] }}</td>
-                            <td>{{ expense[4] }}</td>
+                            <td><input type="checkbox" name="selected_expenses" value="{{ expense.id }}" class="expense-checkbox"></td>
+                            <td>{{ expense.title }}</td>
+                            <td>₹{{ expense.amount }}</td>
+                            <td>{{ expense.category }}</td>
+                            <td>{{ expense.date }}</td>
                             <td>
                                 <div class="expense-actions">
-                                    <a href="{{ url_for('edit_expense', expense_id=expense[0]) }}" class="btn btn-edit">Edit</a>
-                                    <a href="{{ url_for('delete_expense', expense_id=expense[0]) }}" onclick="return confirm('Are you sure?')" class="btn btn-delete">Delete</a>
+                                    <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="btn btn-edit">Edit</a>
+                                    <a href="{{ url_for('delete_expense', expense_id=expense.id) }}" onclick="return confirm('Are you sure?')" class="btn btn-delete">Delete</a>
                                 </div>
                             </td>
                         </tr>
